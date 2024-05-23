@@ -183,3 +183,142 @@ app.post('/adminpassword', (req, res) => {
         res.status(500).send('Internal Server Error');
     }
 });
+
+app.get('/approve',authenticateadmin, (req, res) => {
+
+    const selectQuery = 'SELECT * FROM complaints ';
+    
+
+    db.query(selectQuery, (err, results) => {
+        if (err) {
+            throw err;
+        }
+        
+     
+        res.render('apc', { complaints: results });
+    });
+});
+
+
+//aproveed complaints
+app.get('/apc/:referenceID',authenticateadmin,  (req, res) => {
+    const referenceID = req.params.referenceID;
+
+    // Get the row from complaints table based on referenceID
+    db.query('SELECT * FROM complaints WHERE referenceID = ?', [referenceID], (error, results) => {
+        if (error) {
+            console.error('Error fetching complaint:', error);
+            res.status(500).send('Error fetching complaint');
+            return;
+        }
+
+        if (results.length === 0) {
+            res.status(404).send('Complaint not found');
+            return;
+        }
+
+        const complaint = results[0];
+
+        // Insert the row into approvedcomplaints table
+        db.query('INSERT INTO approvedcomplaints (complaintType, name, aadharID, phoneNumber, complaintMessage, referenceID, email, created_at, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)', [complaint.complaintType, complaint.name, complaint.aadharID, complaint.phoneNumber, complaint.complaintMessage, complaint.referenceID, complaint.email, complaint.created_at, complaint.status], (error, results) => {
+            if (error) {
+                console.error('Error approving complaint:', error);
+                res.status(500).send('Error approving complaint');
+                return;
+            }
+
+            // Update the status to "processing" in alldata table
+            db.query('UPDATE alldata SET status = ? WHERE referenceID = ?', ['processing', referenceID], (error, results) => {
+                if (error) {
+                    console.error('Error updating status in alldata:', error);
+                    res.status(500).send('Error updating status in alldata');
+                    return;
+                }
+
+                // Delete the row from complaints table
+                db.query('DELETE FROM complaints WHERE referenceID = ?', [referenceID], (error, results) => {
+                    if (error) {
+                        console.error('Error removing complaint:', error);
+                        res.status(500).send('Error removing complaint');
+                        return;
+                    }
+
+                    res.redirect('/approve');
+                });
+            });
+        });
+    });
+})
+
+//officer 17/05/2024
+// ??OFFICER
+
+
+app.get('/of/:parameter',authenticateadmin, (req, res) => {
+    const { parameter } = req.params;
+
+   req.session.ct = parameter;
+
+    db.query('SELECT * FROM approvedcomplaints WHERE complaintType = ?', [parameter], (err, result) => {
+        if (err) {
+            console.error(err);
+            return res.status(500).send('Server Error');
+        }
+        
+        res.render('usercomplaints', { complaints: result });
+    });
+});
+
+// mark as solved
+
+
+app.get('/sc/:referenceID',authenticateadmin, (req, res) => {
+    const referenceID = req.params.referenceID;
+
+
+    // Get the row from complaints table based on referenceID
+    db.query('SELECT * FROM approvedcomplaints WHERE referenceID = ?', [referenceID], (error, results) => {
+        if (error) {
+            console.error('Error fetching complaint:', error);
+            res.status(500).send('Error fetching complaint');
+            return;
+        }
+
+        if (results.length === 0) {
+            res.status(404).send('Complaint not found');
+            return;
+        }
+
+        const complaint = results[0];
+
+        // Insert the row into approvedcomplaints table
+        db.query('INSERT INTO solved (complaintMessage, referenceID) VALUES (?, ?)', [complaint.complaintMessage, complaint.referenceID], (error, results) => {
+            if (error) {
+                console.error('Error approving complaint:', error);
+                res.status(500).send('Error approving complaint');
+                return;
+            }
+
+            // Update the status to "processing" in alldata table
+            db.query('UPDATE alldata SET status = ? WHERE referenceID = ?', ['solved', referenceID], (error, results) => {
+                if (error) {
+                    console.error('Error updating status in alldata:', error);
+                    res.status(500).send('Error updating status in alldata');
+                    return;
+                }
+
+                // Delete the row from complaints table
+                db.query('DELETE FROM approvedcomplaints WHERE referenceID = ?', [referenceID], (error, results) => {
+                    if (error) {
+                        console.error('Error removing complaint:', error);
+                        res.status(500).send('Error removing complaint');
+                        return;
+                    }
+
+                    res.redirect('http://localhost:3000/of/' + req.session.ct);
+
+                });
+            });
+        });
+    });
+});
