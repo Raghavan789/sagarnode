@@ -277,7 +277,7 @@ app.post('/submitComplaint', (req, res) => {
 
     // Getting the filename and extension of the uploaded photo
     const imageName = Date.now() + '-' + photo.name;
-    const imageUploadPath = path.join(__dirname, 'public/images/upload_images/', imageName);
+    const imageUploadPath = path.join(__dirname, 'public/images/complaint_images/', imageName);
 
     // Saving the photo to the server
     photo.mv(imageUploadPath, (err) => {
