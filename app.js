@@ -248,18 +248,56 @@ app.post('/register', (req, res) => {
 });
 
 // Route to handle complaint submission
+
+//old post request before modification to uplaod photo
+// app.post('/submitComplaint', (req, res) => {
+//     const a_id = req.session.ac_id;
+//     const {email, complaintType, name, aadharID, phoneNumber, complaintMessage } = req.body;
+//     console.log(req.body);
+//     const insertQuery = 'INSERT INTO complaints (complaintType, name, aadharID, phoneNumber, complaintMessage, ac_id,email) VALUES (?, ?, ?, ?, ?, ?, ?)';
+//     db.query(insertQuery, [complaintType, name, aadharID, phoneNumber, complaintMessage,a_id,email], (err, result) => {
+//         if (err) {
+//             throw err;
+//         }
+//         res.send('Complaint submitted successfully');
+//     });
+// });
+
+
+//after commenting the above code 
+const fs = require('fs');
+
+
 app.post('/submitComplaint', (req, res) => {
     const a_id = req.session.ac_id;
-    const {email, complaintType, name, aadharID, phoneNumber, complaintMessage } = req.body;
-    console.log(req.body);
-    const insertQuery = 'INSERT INTO complaints (complaintType, name, aadharID, phoneNumber, complaintMessage, ac_id,email) VALUES (?, ?, ?, ?, ?, ?, ?)';
-    db.query(insertQuery, [complaintType, name, aadharID, phoneNumber, complaintMessage,a_id,email], (err, result) => {
+    const { email, complaintType, name, aadharID, phoneNumber, complaintMessage } = req.body;
+
+    // Handling file upload
+    const photo = req.files.photo; // Assuming file input field name is "photo"
+
+    // Getting the filename and extension of the uploaded photo
+    const imageName = Date.now() + '-' + photo.name;
+    const imageUploadPath = path.join(__dirname, 'public/images/upload_images/', imageName);
+
+    // Saving the photo to the server
+    photo.mv(imageUploadPath, (err) => {
         if (err) {
-            throw err;
+            console.error(err);
+            return res.status(500).send('Failed to upload image.');
         }
-        res.send('Complaint submitted successfully');
+
+        const insertQuery = 'INSERT INTO complaints (complaintType, name, aadharID, phoneNumber, complaintMessage, ac_id, email, image_name) VALUES (?, ?, ?, ?, ?, ?, ?, ?)';
+        db.query(insertQuery, [complaintType, name, aadharID, phoneNumber, complaintMessage, a_id, email, imageName], (err, result) => {
+            if (err) {
+                console.error(err);
+                return res.status(500).send('Failed to submit complaint.');
+            }
+            res.send('Complaint submitted successfully');
+        });
     });
 });
+
+
 
 // Route to render dashboard page
 app.get('/dashboard', (req, res) => {
