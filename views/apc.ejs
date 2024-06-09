@@ -1,10 +1,9 @@
-<!-- apc.ejs -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title> AProve Complaints</title>
+    <title>Approved Complaints</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -21,14 +20,17 @@
             width: 100%;
             border-collapse: collapse;
             margin-top: 20px;
+            border-radius: 8px;
+            overflow: hidden;
         }
         th, td {
-            padding: 10px;
+            padding: 12px;
             border: 1px solid #ddd;
             text-align: left;
         }
         th {
-            background-color: #f2f2f2;
+            background-color: #007bff;
+            color: #fff;
         }
         tr:nth-child(even) {
             background-color: #f9f9f9;
@@ -36,22 +38,30 @@
         tr:hover {
             background-color: #ddd;
         }
+        button {
+            background-color: #28a745;
+            color: #fff;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #218838;
+        }
     </style>
 </head>
 <body>
-    <h1>Complaints</h1>
+    <h1>Approved Complaints</h1>
     <table>
         <thead>
             <tr>
                 <th>ID</th>
                 <th>Complaint Type</th>
-              
-                
-               
                 <th>Complaint Message</th>
                 <th>Reference ID</th>
-               
-                <th>ACTION</th>
+                <th>Action</th>
             </tr>
         </thead>
         <tbody>
@@ -59,9 +69,6 @@
                 <tr>
                     <td><%= complaint.id %></td>
                     <td><%= complaint.complaintType %></td>
-                   
-                    
-                  
                     <td><%= complaint.complaintMessage %></td>
                     <td><%= complaint.referenceID %></td>
                     <td>
@@ -69,8 +76,6 @@
                             <button type="submit">Approve</button>
                         </form>
                     </td>
-                   
-                   
                 </tr>
             <% }); %>
         </tbody>

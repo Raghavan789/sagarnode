@@ -1,33 +1,148 @@
-<!--forms.ejs -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Complaint Submission</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            background: linear-gradient(to right, #0056b3, #0082e6);
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            max-width: 800px;
+            margin: 20px;
+            padding: 30px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.2);
+        }
+        h2 {
+            color: #0056b3;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+        label {
+            margin: 10px 0 5px;
+            font-weight: bold;
+            color: #0056b3;
+        }
+        input, select, textarea {
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            font-size: 1em;
+            width: 100%;
+        }
+        input:focus, select:focus, textarea:focus {
+            border-color: #0056b3;
+            outline: none;
+            box-shadow: 0 0 5px rgba(0, 86, 179, 0.3);
+        }
+        textarea {
+            resize: vertical;
+        }
+        button {
+            padding: 15px 20px;
+            background-color: #0056b3;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: background-color 0.3s, box-shadow 0.3s;
+        }
+        button:hover {
+            background-color: #004494;
+            box-shadow: 0 0 10px rgba(0, 68, 148, 0.5);
+        }
+        #wordCountMessage {
+            font-size: 0.9em;
+            margin-bottom: 20px;
+        }
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+            h2 {
+                font-size: 1.5em;
+            }
+        }
+    </style>
+    <script>
+        function validateWordCount() {
+            const complaintMessage = document.getElementById('complaintMessage').value;
+            const wordCount = complaintMessage.trim().split(/\s+/).length;
+            const wordCountMessage = document.getElementById('wordCountMessage');
+
+            if (wordCount > 100) {
+                wordCountMessage.style.color = 'red';
+                wordCountMessage.textContent = 'Your complaint message exceeds the 100 word limit. Please shorten your message.';
+                return false;
+            } else {
+                wordCountMessage.style.color = 'green';
+                wordCountMessage.textContent = `Word count: ${wordCount}/100`;
+                return true;
+            }
+        }
+
+        function updateWordCount() {
+            const complaintMessage = document.getElementById('complaintMessage').value;
+            const wordCount = complaintMessage.trim().split(/\s+/).length;
+            const wordCountMessage = document.getElementById('wordCountMessage');
+
+            wordCountMessage.textContent = `Word count: ${wordCount}/100`;
+            if (wordCount > 100) {
+                wordCountMessage.style.color = 'red';
+            } else {
+                wordCountMessage.style.color = 'green';
+            }
+        }
+    </script>
 </head>
 <body>
-    <h2>Submit a Complaint</h2>
-    <form action="/submitComplaint" method="POST" enctype="multipart/form-data">
-        <input type="hidden" id="email" name="email" value="<%= email %>">
-        <label for="complaintType">Complaint Type:</label>
-        <select id="complaintType" name="complaintType">
-            <option value="road">road</option>
-            <option value="water">water</option>
-            <option value="dry">dryy</option>
-            <!-- Add more options as needed -->
-        </select><br><br>
-        <label for="name">Name:</label>
-        <input type="text" id="name" name="name" required><br><br>
-        <label for="aadharID">Aadhar ID:</label>
-        <input type="text" id="aadharID" name="aadharID" required><br><br>
-        <label for="phoneNumber">Phone Number:</label>
-        <input type="tel" id="phoneNumber" name="phoneNumber" required><br><br>
-        <label for="photo">Upload Photo:</label><br>
-        <input type="file" id="photo" name="photo" accept="image/*"><br><br>
-        <label for="complaintMessage">Complaint Message:</label><br>
-        <textarea id="complaintMessage" name="complaintMessage" rows="4" required></textarea><br><br>
-        <button type="submit">Submit</button>
-    </form>
+    <div class="container">
+        <h2>Submit a Complaint</h2>
+        <form action="/submitComplaint" method="POST" enctype="multipart/form-data" onsubmit="return validateWordCount()">
+            <input type="hidden" id="email" name="email" value="<%= email %>">
+            
+            <label for="complaintType">Complaint Type:</label>
+            <select id="complaintType" name="complaintType">
+                <option value="road">Road</option>
+                <option value="water">Water</option>
+                <option value="dry">Dry</option>
+                <!-- Add more options as needed -->
+            </select>
+            
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" required>
+            
+            <label for="aadharID">Aadhar ID:</label>
+            <input type="text" id="aadharID" name="aadharID" required>
+            
+            <label for="phoneNumber">Phone Number:</label>
+            <input type="tel" id="phoneNumber" name="phoneNumber" required>
+            
+            <label for="photo">Upload Photo:</label>
+            <input type="file" id="photo" name="photo" accept="image/*">
+            
+            <label for="complaintMessage">Complaint Message:</label>
+            <textarea id="complaintMessage" name="complaintMessage" rows="4" required oninput="updateWordCount()"></textarea>
+            <p id="wordCountMessage">Word count: 0/100</p>
+            
+            <button type="submit">Submit</button>
+        </form>
+    </div>
 </body>
 </html>

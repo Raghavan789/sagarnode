@@ -1,13 +1,13 @@
-<!-- usercomplaints.ejs -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title> AProve Complaints</title>
+    <title>Approve Complaints</title>
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css"/>
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: #f4f4f4;
             margin: 0;
             padding: 0;
@@ -15,65 +15,73 @@
         h1 {
             text-align: center;
             margin-top: 20px;
-            color: #333;
+            color: #0056b3;
+        }
+        .container {
+            width: 80%;
+            margin: auto;
+            overflow: hidden;
         }
         table {
             width: 100%;
             border-collapse: collapse;
             margin-top: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
         th, td {
-            padding: 10px;
+            padding: 15px;
             border: 1px solid #ddd;
             text-align: left;
         }
         th {
-            background-color: #f2f2f2;
+            background-color: #0056b3;
+            color: white;
         }
         tr:nth-child(even) {
             background-color: #f9f9f9;
         }
         tr:hover {
-            background-color: #ddd;
+            background-color: #f1f1f1;
+        }
+        button {
+            background-color: #0056b3;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #003f7f;
         }
     </style>
 </head>
 <body>
-    <h1>Complaints</h1>
-    <table>
-        <thead>
-            <tr>
-            
-                <th>Complaint Type</th>
-              
-                
-               
-                <th>Complaint Message</th>
-                <!-- <th>Reference ID</th> -->
-               
-                <th>ACTION</th>
-            </tr>
-        </thead>
-        <tbody>
-            <% complaints.forEach(complaint => { %>
+    <div class="container">
+        <h1>Complaints</h1>
+        <table>
+            <thead>
                 <tr>
-                 
-                    <td><%= complaint.complaintType %></td>
-                   
-                    
-                  
-                    <td><%= complaint.complaintMessage %></td>
-                    <!-- <td><%= complaint.referenceID %></td> -->
-                    <td>
-                        <form action="http://localhost:3000/sc/<%= complaint.referenceID %>" method="get">
-                            <button type="submit">MARK AS SOLVED</button>
-                        </form>
-         </td>
-                   
-                   
+                    <th>Complaint Type</th>
+                    <th>Complaint Message</th>
+                    <th>Action</th>
                 </tr>
-            <% }); %>
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                <% complaints.forEach(complaint => { %>
+                    <tr>
+                        <td><%= complaint.complaintType %></td>
+                        <td><%= complaint.complaintMessage %></td>
+                        <td>
+                            <form action="http://localhost:3000/sc/<%= complaint.referenceID %>" method="get">
+                                <button type="submit">Mark as Solved</button>
+                            </form>
+                        </td>
+                    </tr>
+                <% }); %>
+            </tbody>
+        </table>
+    </div>
 </body>
 </html>

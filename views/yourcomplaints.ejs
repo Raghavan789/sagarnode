@@ -1,30 +1,31 @@
-<!-- yourcomplaints.ejs -->
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Your Complaints</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
+            font-family: 'Roboto', sans-serif;
+            background-color: #f4f6f9;
             margin: 0;
             padding: 0;
         }
 
         .container {
-            max-width: 800px;
-            margin: 20px auto;
+            max-width: 900px;
+            margin: 30px auto;
             padding: 20px;
             background-color: #fff;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
         }
 
         h1 {
-            color: #333;
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 30px;
         }
 
         ul {
@@ -34,16 +35,45 @@
 
         li {
             margin-bottom: 20px;
-            border-bottom: 1px solid #ccc;
-            padding: 10px 0;
-        }
-
-        li:last-child {
-            border-bottom: none;
+            padding: 20px;
+            background-color: #e9ecef;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
         }
 
         strong {
-            color: #007bff;
+            color: #2980b9;
+        }
+
+        .complaint-details {
+            color: #34495e;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin-top: 10px;
+            border-radius: 8px;
+        }
+
+        .no-complaints {
+            text-align: center;
+            color: #7f8c8d;
+        }
+
+        .complaint-type {
+            font-size: 1.2em;
+            font-weight: bold;
+        }
+
+        .reference-id {
+            font-size: 1em;
+            margin-bottom: 10px;
+        }
+
+        .description, .status {
+            font-size: 0.95em;
         }
     </style>
 </head>
@@ -53,18 +83,22 @@
         
         <% if (complaints.length > 0) { %>
             <ul>
-                <% complaints.forEach(i => { %>
+                <% complaints.forEach(complaint => { %>
                     <li>
-                        <strong>Complaint Type:</strong> <%= i.complaintType %><br>
-                        <strong>Reference ID:</strong> <%= i.referenceID %><br>
-                        <strong>Description:</strong> <%= i.complaintMessage %><br>
-                        <strong>Status</strong> <%= i.status %><br>
-
+                        <div class="complaint-details">
+                            <div class="complaint-type"><strong>Complaint Type:</strong> <%= complaint.complaintType %></div>
+                            <div class="reference-id"><strong>Reference ID:</strong> <%= complaint.referenceID %></div>
+                            <div class="description"><strong>Description:</strong> <%= complaint.complaintMessage %></div>
+                            <div class="status"><strong>Status:</strong> <%= complaint.status %></div>
+                            <% if (complaint.image_name) { %>
+                                <img src="/public/images/complaint_images/<%= complaint.image_name %>" alt="Complaint Image">
+                            <% } %>
+                        </div>
                     </li>
                 <% }); %>
             </ul>
         <% } else { %>
-            <p>No complaints found.</p>
+            <p class="no-complaints">No complaints found.</p>
         <% } %>
     </div>
 </body>

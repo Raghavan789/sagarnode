@@ -1,10 +1,10 @@
-<!--Admin.ejs-->
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -32,52 +32,66 @@
             padding: 20px;
             flex: 1;
             min-width: 250px;
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+        }
+
+        .card a {
+            text-decoration: none;
+            color: inherit;
         }
 
         .card h2 {
             margin-top: 0;
+            font-size: 1.5rem;
+            color: #333;
         }
 
         .card p {
             margin-bottom: 0;
+            color: #666;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>Admin Dashboard</h1>
+        <h1 class="text-center mb-4">Admin Dashboard</h1>
 
         <div class="card-container">
             <!-- Card 1 -->
             <div class="card">
-                <a href="http://localhost:3000/of/road" style="text-decoration: none; color: inherit;">
+                <a href="http://localhost:3000/of/road">
                     <h2>Road</h2>
-                    <p>This is about Road.</p>
+                    <p>View complaints related to roads.</p>
                 </a>
             </div>
-            
-            
 
             <!-- Card 2 -->
             <div class="card">
-                <a href="http://localhost:3000/of/water" style="text-decoration: none; color: inherit;">
-                    <h2>water</h2>
-                    <p>This is about Road.</p>
+                <a href="http://localhost:3000/of/water">
+                    <h2>Water</h2>
+                    <p>View complaints related to water.</p>
                 </a>
             </div>
 
             <!-- Card 3 -->
             <div class="card">
-                <a href="http://localhost:3000/of/dry" style="text-decoration: none; color: inherit;">
-                    <h2>dryyy</h2>
-                    <p>This is about Road.</p>
+                <a href="http://localhost:3000/of/dry">
+                    <h2>Dry Areas</h2>
+                    <p>View complaints related to dry areas.</p>
                 </a>
             </div>
 
             <!-- Card 4 -->
             <div class="card">
-                <h2>APPROVE COMPLAINTS</h2>
-                <p>This is the content of Card 4.</p>
+                <a href="#">
+                    <h2>Approve Complaints</h2>
+                    <p>Approve complaints submitted by users.</p>
+                </a>
             </div>
         </div>
     </div>

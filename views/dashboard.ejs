@@ -3,26 +3,32 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard</title>
+    <title>Government Dashboard</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            background-color: #f4f4f9;
+            color: #333;
         }
         .navbar {
             display: flex;
-            justify-content: flex-end;
-            background-color: #333;
-            padding: 10px;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #0056b3;
+            padding: 10px 20px;
+            color: white;
         }
         .navbar a {
             color: white;
-            padding: 14px 20px;
+            padding: 10px 15px;
             text-decoration: none;
             text-align: center;
+            transition: background-color 0.3s, color 0.3s;
         }
         .navbar a:hover {
-            background-color: #ddd;
-            color: black;
+            background-color: #ffffff;
+            color: #0056b3;
         }
         .profile-pic {
             width: 50px;
@@ -30,38 +36,89 @@
             border-radius: 50%;
             overflow: hidden;
             margin-left: 10px;
+            border: 2px solid white;
         }
         .profile-pic img {
             width: 100%;
             height: 100%;
             object-fit: cover;
         }
+        .container {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        h2 {
+            color: #0056b3;
+        }
+        p {
+            font-size: 1.1em;
+            line-height: 1.6;
+        }
         #datetime {
             font-size: 1.2em;
             margin-top: 20px;
+            font-weight: bold;
+            color: #0056b3;
+        }
+        a.button {
+            display: inline-block;
+            margin-top: 10px;
+            padding: 10px 20px;
+            background-color: #0056b3;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+        a.button:hover {
+            background-color: #003f8a;
+        }
+        .footer {
+            text-align: center;
+            padding: 20px;
+            background-color: #0056b3;
+            color: white;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
         }
     </style>
 </head>
 <body>
     <div class="navbar">
-        <a href="/home">Home</a>
-        <a href="/profile">Profile</a>
-        <a href="/settings">Settings</a>
-        <a href="/logout">Logout</a>
-        <div class="profile-pic">
-            <img src="http://localhost:3000/images/upload_images/<%=data[0].image%>" alt="Profile Picture">
+        <div class="logo">
+            <h1>GovDashboard</h1>
+        </div>
+        <div>
+            <a href="/home">Home</a>
+            <a href="/profile">Profile</a>
+            <a href="/settings">Settings</a>
+            <a href="/logout">Logout</a>
+            <div class="profile-pic">
+                <img src="http://localhost:3000/images/upload_images/<%=data[0].image%>" alt="Profile Picture">
+            </div>
         </div>
     </div>
 
-    <h2>WELCOME TO DASHBOARD</h2>
-    <p>Welcome <%= email %>!</p>
-    
-    <!-- Date and Time Display -->
-    <div id="datetime"></div>
+    <div class="container">
+        <h2>WELCOME TO THE GOVERNMENT DASHBOARD</h2>
+        <p>Welcome <%= email %>!</p>
+        
+        <!-- Date and Time Display -->
+        <div id="datetime"></div>
 
-    <!-- Other dashboard content-->
-    <p>Register complaint?? <a href="/form">register here</a></p>
-    <p>Your complaints <a href="/uc">view here</a></p>
+        <!-- Other dashboard content -->
+        <p>Register complaint? <a class="button" href="/form">Register here</a></p>
+        <p>Your complaints <a class="button" href="/uc">View here</a></p>
+    </div>
+
+    <div class="footer">
+        <p>&copy; 2024 Government of [Your Country]. All rights reserved.</p>
+    </div>
 
     <script>
         function updateDateTime() {

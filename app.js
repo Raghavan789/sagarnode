@@ -344,6 +344,7 @@ app.get('/uc', (req, res) => {
         }
         res.render('yourcomplaints', { complaints: results });
     });
+   
 });
 
 // Admin panel routes
@@ -498,4 +499,7 @@ app.listen(port, () => {
 
 app.get('/test', (req, res) => {
     res.render('test.ejs');
+});
+app.use((req, res, next) => {
+    res.render('404.ejs');
 });

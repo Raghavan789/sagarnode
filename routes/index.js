@@ -55,3 +55,27 @@ exports.index = function(req, res){
       res.render('profile.ejs',{data:result, message: message});
    });
  };
+// Assuming you are using Express.js and a MySQL database connection (`db`).
+
+exports.complaints = function(req, res){
+  var message = '';
+  var userEmail = req.session.email; // Assuming you store user email in session
+  
+  if (!userEmail) {
+      return res.status(401).send('Unauthorized');
+  }
+
+  var sql = "SELECT * FROM `complaints` WHERE `email` = ?";
+  db.query(sql, [userEmail], function(err, results) {
+      if (err) {
+          console.error("Error fetching complaints: ", err);
+          return res.status(500).send('Server Error');
+      }
+      
+      if (results.length <= 0) {
+          message = "No complaints found!";
+      }
+      
+      res.render('yourcomplaints', { complaints: results, message: message });
+  });
+};
